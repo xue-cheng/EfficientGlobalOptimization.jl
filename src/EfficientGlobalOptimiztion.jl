@@ -1,4 +1,4 @@
-module EfficientGlobalOptimiztion
+module EfficientGlobalOptimization
 
 @enum EGOSense Min Max
 const _sym2sense = Dict(Symbol(i)=>i for i in instances(EGOSense))

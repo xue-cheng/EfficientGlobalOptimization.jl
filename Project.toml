@@ -1,4 +1,4 @@
-name = "EfficientGlobalOptimiztion"
+name = "EfficientGlobalOptimization"
 uuid = "394991d0-d7c6-11e9-19af-cd33f6408fef"
 authors = ["Cheng Xue <xuecheng@nuaa.edu.cn>"]
 version = "0.1.0"
