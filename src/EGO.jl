@@ -68,8 +68,10 @@ optimum(ego::EGO{Min}) = ego[argmin(ego.gp.y)]
 optimum(ego::EGO{Max}) = ego[argmax(ego.gp.y)]
 
 function acquire(ego::EGO, x_cache)
-    acquire(ego.gp, ego.aquisition, ego.acquire_optimizer, ego.lowerbounds, ego.upperbounds, x_cache)
+    acquire(ego.gp, ego.aquisition, ego.acquire, ego.lowerbounds, ego.upperbounds, x_cache)
 end
 function acquire(ego::EGO)
-    acquire(ego.gp, ego.aquisition, ego.acquire_optimizer, ego.lowerbounds, ego.upperbounds)
+    acquire(ego.gp, ego.aquisition, ego.acquire, ego.lowerbounds, ego.upperbounds)
 end
+
+history(ego::EGO) = ego.gp.y, ego.gp.x
