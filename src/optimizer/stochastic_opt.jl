@@ -1,4 +1,4 @@
-export CRSOptimizer, ISRESOptimizer
+
 struct StochasticSearchOptimizer{P,S} <: NLOptimizer
     algo::Symbol
     population::P

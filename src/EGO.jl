@@ -1,7 +1,6 @@
 import Base: append!, ndims, length, isempty, getindex
 import Sobol
 
-export EGO,optimum,acquire,acquire!,init_sampling
 
 struct EGO{S}
     gp

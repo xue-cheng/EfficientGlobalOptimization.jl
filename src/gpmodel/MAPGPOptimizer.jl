@@ -1,6 +1,5 @@
 import Base:isempty, empty!
 
-export MAPGPOptimizer
 
 mutable struct MAPGPOptimizer{O} <: GPOptimizer
     count::Int

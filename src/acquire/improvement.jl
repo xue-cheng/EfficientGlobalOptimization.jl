@@ -1,5 +1,4 @@
 import GaussianProcesses: φ, Φ
-export ProbabilityOfImprovement, ExpectedImprovement
 abstract type ImprovementAquisition{S}<:EGOAquisition{S} end
 
 update_parameters!(a::ImprovementAquisition{Min}, gp::GP.GPBase) = a.τ = y_min(gp)

@@ -1,4 +1,3 @@
-export Acquire
 
 include("aquisition.jl")
 

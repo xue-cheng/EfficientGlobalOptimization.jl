@@ -1,6 +1,5 @@
 import ElasticArrays:ElasticArray
 
-export EGOAquisition
 
 abstract type EGOAquisition{S} end
 

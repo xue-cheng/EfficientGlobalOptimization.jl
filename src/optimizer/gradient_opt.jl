@@ -1,4 +1,4 @@
-export LBFGSOptimizer
+
 
 struct GradientLocalOptimizer <: NLOptimizer
     algo::Symbol

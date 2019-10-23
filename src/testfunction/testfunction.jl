@@ -1,6 +1,5 @@
 import Base: ndims
 
-export Branin_Forrester, Ackley, Rosenbrock,lowerbounds,upperbounds,optimum
 
 abstract type TestFunction{N} end
 

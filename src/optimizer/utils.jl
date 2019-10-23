@@ -1,4 +1,4 @@
-export wrap_function
+
 function auto_diff(f)
     (x, g) -> if !isempty(g)
         res = DiffResults.DiffResult(0., g)
