@@ -28,7 +28,8 @@ end
 ndims(ego::EGO) = size(ego.gp.x, 1)
 length(ego::EGO) = length(ego.gp.y)
 isempty(ego::EGO) = isempty(ego.gp.y)
-
+lowerbounds(ego::EGO) = ego.lowerbounds
+upperbounds(ego::EGO) = ego.upperbounds
 function init_sampling(ego::EGO, n::Int)
     d = length(ego.lowerbounds)
     x = Matrix{Float64}(undef, d, n)

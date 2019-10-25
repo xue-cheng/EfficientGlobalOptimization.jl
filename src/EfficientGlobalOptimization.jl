@@ -1,7 +1,7 @@
 module EfficientGlobalOptimization
 
 
-export EGO, optimum, acquire, init_sampling, history
+export EGO, optimum, acquire, init_sampling, history, lowerbounds, upperbounds
 export Acquire, EGOAquisition, ProbabilityOfImprovement, ExpectedImprovement
 export MAPGPOptimizer
 export wrap_function
