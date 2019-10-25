@@ -34,22 +34,22 @@ function (f::Ackley{N})(x::AbstractVector) where {N}
     -f.a*exp(-f.b*sqrt(sum1/N)) - exp(sum2/N) + f.a + ℯ
 end
 
-lowerbounds(::Ackley{N}) where{N} = fill(-5.0, N)
-upperbounds(::Ackley{N}) where{N} = fill(15.0, N)
+lowerbounds(::Ackley{N}) where{N} = fill(-32.768, N)
+upperbounds(::Ackley{N}) where{N} = fill( 32.768, N)
 optimum(::Ackley{N}) where{N} = 0.0, zeros(N)
 
 struct Rosenbrock{N} <: TestFunction{N} end
 Rosenbrock(n::Int) = Rosenbrock{n}()
 function (f::Rosenbrock{N})(x::AbstractVector) where {N}
-    sum1 = 0.0
-    sum2 = 0.0
-    for i = 1:N
-        sum1 += x[i]^2
-        sum2 += cos(f.c*x[i])
+    sum = 0.0
+    for i = 1:N-1
+        xᵢ = x[i]
+        xⱼ = x[i+1]
+        sum += 100.0*(xⱼ-xᵢ^2)^2+(xᵢ-1)^2
     end
-    -f.a*exp(-f.b*sqrt(sum1/N)) - exp(sum2/N) + f.a + ℯ
+    sum
 end
 
-lowerbounds(::Rosenbrock{N}) where{N} = fill(-32.768, N)
-upperbounds(::Rosenbrock{N}) where{N} = fill( 32.768, N)
-optimum(::Rosenbrock{N}) where{N} = 0.0, zeros(N)
+lowerbounds(::Rosenbrock{N}) where{N} = fill(-5.0, N)
+upperbounds(::Rosenbrock{N}) where{N} = fill(15.0, N)
+optimum(::Rosenbrock{N}) where{N} = 0.0, ones(N)
