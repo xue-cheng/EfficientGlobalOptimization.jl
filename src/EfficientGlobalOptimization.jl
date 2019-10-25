@@ -6,6 +6,7 @@ export Acquire, EGOAquisition, ProbabilityOfImprovement, ExpectedImprovement
 export MAPGPOptimizer
 export wrap_function
 export LBFGSOptimizer, CRSOptimizer, ISRESOptimizer
+export ego_save
 
 @enum EGOSense Min Max
 const _sym2sense = Dict(Symbol(i)=>i for i in instances(EGOSense))
@@ -21,7 +22,7 @@ include("optimizer/optimizer.jl")
 include("gpmodel/gpmodel.jl")
 include("acquire/acquire.jl")
 include("EGO.jl")
-
+include("fileio.jl")
 include("testfunction/testfunction.jl")
 
 end # module
