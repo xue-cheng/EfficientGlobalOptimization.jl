@@ -1,4 +1,3 @@
-using Test
 import EfficientGlobalOptimization: Branin_Forrester, Ackley, Rosenbrock
 import EfficientGlobalOptimization: optimum, lowerbounds, upperbounds
 

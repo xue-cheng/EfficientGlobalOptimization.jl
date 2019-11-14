@@ -7,6 +7,7 @@ export MAPGPOptimizer
 export wrap_function
 export LBFGSOptimizer, CRSOptimizer, ISRESOptimizer
 export ego_save
+export ParetoSet
 
 @enum EGOSense Min Max
 const _sym2sense = Dict(Symbol(i)=>i for i in instances(EGOSense))
@@ -25,5 +26,5 @@ include("acquire/acquire.jl")
 include("EGO.jl")
 include("fileio.jl")
 include("testfunction/testfunction.jl")
-
+include("paretoset.jl")
 end # module
