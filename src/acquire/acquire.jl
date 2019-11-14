@@ -1,6 +1,4 @@
 
-include("aquisition.jl")
-
 mutable struct Acquire
     global_opt::NLOptimizer
     local_opt::NLOptimizer

@@ -20,6 +20,7 @@ end
 
 include("optimizer/optimizer.jl")
 include("gpmodel/gpmodel.jl")
+include("aquisition/aquisition.jl")
 include("acquire/acquire.jl")
 include("EGO.jl")
 include("fileio.jl")
