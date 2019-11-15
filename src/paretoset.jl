@@ -10,11 +10,11 @@ function ParetoSub(X, perm)
 end
 
 """
-    index = ParetoSet(X)
-Get the Pareto set from a given set of oberservations `X`.
+    index = ParetoSet(X[, sense])
+Get the Pareto set from a given set of oberservations `X`. 
 # Argument
-- `X::AbstractMatrix` n_objectives * n_samples
-
+- `X::AbstractMatrix{Real}` size(X)=(n_objectives, n_samples)
+- `sense::AbstractVector{Union{Symbol, EGOSense}}=repeat(:Min, n_objectives)` sense of each objective, size(S)=(n_objectives,)
 """
 function ParetoSet(X::AbstractMatrix)
     n,m = size(X)
@@ -32,3 +32,7 @@ function ParetoSet(X::AbstractMatrix)
     membership[perm] .= true
     membership
 end
+
+ParetoSet(X, sense::AbstractVector{EGOSense}) = ParetoSet(X.*Int.(sense))
+
+ParetoSet(X, sense::AbstractVector{Symbol}) = ParetoSet(X, sym2sense.(sense))

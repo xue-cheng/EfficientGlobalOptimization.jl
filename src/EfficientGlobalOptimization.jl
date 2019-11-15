@@ -9,7 +9,7 @@ export LBFGSOptimizer, CRSOptimizer, ISRESOptimizer
 export ego_save
 export ParetoSet
 
-@enum EGOSense Min Max
+@enum EGOSense Min=1 Max=-1
 const _sym2sense = Dict(Symbol(i)=>i for i in instances(EGOSense))
 function sym2sense(s::Symbol)
     try
