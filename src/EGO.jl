@@ -11,7 +11,7 @@ struct EGO{S}
     upperbounds
 end
 
-function EGO(aquisition::EGOAquisition{S},
+function EGO(aquisition::SingleObjAquisition{S},
     lowerbounds::AbstractVector,
     upperbounds::AbstractVector;
     mean::GP.Mean=GP.MeanConst(0.), 
@@ -25,7 +25,8 @@ function EGO(aquisition::EGOAquisition{S},
     EGO{S}(gp, model_optimizer, aquisition, acquire, lowerbounds, upperbounds)
 end
 
-ndims(ego::EGO) = size(ego.gp.x, 1)
+ndims(ego::EGO) = size(ego.gp.x, 1), 1
+ndims(ego::EGO, i::Integer) = ndims(ego)[i]
 length(ego::EGO) = length(ego.gp.y)
 isempty(ego::EGO) = isempty(ego.gp.y)
 lowerbounds(ego::EGO) = ego.lowerbounds

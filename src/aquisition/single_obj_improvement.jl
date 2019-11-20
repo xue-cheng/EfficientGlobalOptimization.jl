@@ -1,5 +1,4 @@
-import GaussianProcesses: φ, Φ
-abstract type ImprovementAquisition{S}<:EGOAquisition{S} end
+abstract type ImprovementAquisition{S}<:SingleObjAquisition{S} end
 
 update_parameters!(a::ImprovementAquisition{Min}, gp::GP.GPBase) = a.τ = y_min(gp)
 update_parameters!(a::ImprovementAquisition{Max}, gp::GP.GPBase) = a.τ = y_max(gp)

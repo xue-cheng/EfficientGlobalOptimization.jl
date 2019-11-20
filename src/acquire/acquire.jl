@@ -16,7 +16,7 @@ function doacquire(opt::Acquire, obj, lb::AbstractVector, ub::AbstractVector)
 end
 
 function acquire(gp::GP.GPBase, 
-    a::EGOAquisition,
+    a::SingleObjAquisition,
     opt::Acquire,
     lb::AbstractVector,
     ub::AbstractVector,
@@ -33,7 +33,7 @@ function acquire(gp::GP.GPBase,
 end
 
 function acquire(gp::GP.GPBase, 
-    a::EGOAquisition,
+    a::SingleObjAquisition,
     opt::Acquire,
     lb::AbstractVector,
     ub::AbstractVector,
@@ -50,7 +50,7 @@ end
 
 
 function acquire(gp::GP.GPBase, 
-    a::EGOAquisition,
+    a::SingleObjAquisition,
     opt::Acquire,
     lb::AbstractVector,
     ub::AbstractVector)
