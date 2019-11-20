@@ -13,3 +13,4 @@ need_gradient(o::NLOptimizer) = error("not implemented")
 
 include("stochastic_opt.jl")
 include("gradient_opt.jl")
+include("gradfree_opt.jl")
