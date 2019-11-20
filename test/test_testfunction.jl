@@ -1,4 +1,4 @@
-import EfficientGlobalOptimization: Branin_Forrester, Ackley, Rosenbrock
+import EfficientGlobalOptimization: Branin_Forrester, Ackley, Rosenbrock, SumSphere
 import EfficientGlobalOptimization: optimum, lowerbounds, upperbounds
 import EfficientGlobalOptimization: Schaffer, ZDT
 using MAT
@@ -23,8 +23,10 @@ using MAT
     for i = 2:6
         @test test_optim(Ackley, i)
         @test test_optim(Rosenbrock, i)
+        @test test_optim(SumSphere, i)
         @test test_inbounds(Ackley, i)
         @test test_inbounds(Rosenbrock, i)
+        @test test_inbounds(SumSphere, i)
     end
 end
 

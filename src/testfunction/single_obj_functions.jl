@@ -49,3 +49,13 @@ end
 lowerbounds(::Rosenbrock{N}) where{N} = fill(-5.0, N)
 upperbounds(::Rosenbrock{N}) where{N} = fill(15.0, N)
 optimum(::Rosenbrock{N}) where{N} = 0.0, ones(N)
+
+
+struct SumSphere{N} <: SingleObjectiveTestFunction{N} end
+
+SumSphere(n::Integer) = SumSphere{n}()
+
+(f::SumSphere{N})(x::AbstractVector) where {N} = sum(i->i*x[i]^2,1:N)
+lowerbounds(::SumSphere{N}) where{N} = fill(-10.0, N)
+upperbounds(::SumSphere{N}) where{N} = fill( 10.0, N)
+optimum(::SumSphere{N}) where{N} = 0.0, zeros(N)
