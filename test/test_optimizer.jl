@@ -1,7 +1,5 @@
-import EfficientGlobalOptimization
 import NLopt
 
-EGO = EfficientGlobalOptimization
 @testset "optimizers" begin
     @testset "stochastic" begin
         f = EGO.Branin_Forrester()
@@ -28,4 +26,3 @@ EGO = EfficientGlobalOptimization
         end
     end
 end
-EGO = nothing
