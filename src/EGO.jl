@@ -2,78 +2,51 @@ import Base: append!, ndims, length, isempty, getindex
 import Sobol
 
 
-struct EGO{S}
-    gp
-    gp_optimizer
-    aquisition
-    acquire
-    lowerbounds
-    upperbounds
+struct EGO{S,KRG <: Kriging,AQ <: SingleObjAquisition,AC <: Acquire,LB,UB}
+    krg::KRG
+    tuner::KrigingTuner
+    aquisition::AQ
+    acquire::AC
+    lowerbounds::LB
+    upperbounds::UB
+    function EGO(kriging::Kriging{N,1},
+        tuner::KrigingTuner,
+        lowerbounds::AbstractVector,
+        upperbounds::AbstractVector;
+        acquire::Acquire = Acquire(),
+        aquisition::SingleObjAquisition{S} = ExpectedImprovement(:Min)) where {N,S}
+        length(lowerbounds) != N && throw(ArgumentError("length of `lowerbounds` must be $N"))
+        length(upperbounds) != N && throw(ArgumentError("length of `upperbounds` must be $N"))
+        lob = copy(lowerbounds)
+        upb = copy(upperbounds)
+        new{S,typeof(kriging),typeof(aquisition),typeof(acquire),typeof(lob),typeof(upb)}(kriging,
+            tuner,
+            aquisition,
+            acquire,
+            lob,
+            upb)
+    end
 end
 
-function EGO(aquisition::SingleObjAquisition{S},
-    lowerbounds::AbstractVector,
-    upperbounds::AbstractVector;
-    mean::GP.Mean=GP.MeanConst(0.), 
-    kernel::GP.Kernel=GP.SEArd(zeros(length(lowerbounds)), 5.),
-    logNoise::Float64=-5.0,
-    model_optimizer::GPOptimizer=MAPGPOptimizer(meanbounds = [-10., 10.], kernbounds = [fill(-10., length(lowerbounds)+1), fill(10., length(lowerbounds)+1)]),
-    acquire::Acquire = Acquire()) where{S}
-
-    d = length(lowerbounds)
-    gp = GP.ElasticGPE(d; mean=mean, kernel=kernel, logNoise=logNoise)
-    EGO{S}(gp, model_optimizer, aquisition, acquire, lowerbounds, upperbounds)
-end
-
-ndims(ego::EGO) = size(ego.gp.x, 1), 1
-ndims(ego::EGO, i::Integer) = ndims(ego)[i]
-length(ego::EGO) = length(ego.gp.y)
-isempty(ego::EGO) = isempty(ego.gp.y)
+Base.length(ego::EGO) = length(ego.krg.gps[1].y)
+Base.isempty(ego::EGO) = isempty(ego.krg.gps[1].y)
 lowerbounds(ego::EGO) = ego.lowerbounds
 upperbounds(ego::EGO) = ego.upperbounds
-function init_sampling(ego::EGO, n::Int)
-    d = length(ego.lowerbounds)
-    x = Matrix{Float64}(undef, d, n)
-    s = Sobol.SobolSeq(ego.lowerbounds,ego.upperbounds)
-    for i = 1:n
-        Sobol.next!(s, @view x[:,i])
-    end
-    x
+
+function Base.append!(ego::EGO, x::AbstractMatrix, y::AbstractVector)
+    append!(ego.krg, x, transpose(y))
+    update_parameters!(ego.aquisition, ego.krg)
+    tunekrg!(ego.krg, ego.tuner)
 end
 
-function append!(ego::EGO, x::AbstractMatrix, y::AbstractArray)
-    append!(ego.gp, x, y)
-    update_parameters!(ego.aquisition, ego.gp)
-    optimizemodel!(ego.gp_optimizer, ego.gp, length(y))
+Base.append!(ego::EGO, x::AbstractVector, y::Float64) = append!(ego, reshape(x, :, 1), [y])
+
+optimum(ego::EGO{Min}) = ego.krg[argmin(ego.krg.gps[1].y)]
+
+optimum(ego::EGO{Max}) = ego.krg[argmax(ego.krg.gps[1].y)]
+
+function acquire(ego::EGO, x_cache::AbstractVector...)
+    acquire(ego.krg, ego.aquisition, ego.acquire, ego.lowerbounds, ego.upperbounds, x_cache...)
 end
 
-function append!(ego::EGO, x::AbstractVector, y::Float64)
-    append!(ego.gp, reshape(x,:,1), [y])
-    update_parameters!(ego.aquisition, ego.gp)
-    optimizemodel!(ego.gp_optimizer, ego.gp, 1)
-end
-
-getindex(ego::EGO, i) = ego.gp.y[i], ego.gp.x[:,i]
-
-function getindex(ego::EGO, symbol::Symbol, i)
-    if symbol===:x
-        ego.gp.x[:,i]
-    elseif symbol===:y
-        ego.gp.y[i]
-    else
-        throw(ArgumentError("invalid index: $symbol, must be `:x` or `:y`"))
-    end
-end
-
-optimum(ego::EGO{Min}) = ego[argmin(ego.gp.y)]
-
-optimum(ego::EGO{Max}) = ego[argmax(ego.gp.y)]
-
-function acquire(ego::EGO, x_cache)
-    acquire(ego.gp, ego.aquisition, ego.acquire, ego.lowerbounds, ego.upperbounds, x_cache)
-end
-function acquire(ego::EGO)
-    acquire(ego.gp, ego.aquisition, ego.acquire, ego.lowerbounds, ego.upperbounds)
-end
-
-history(ego::EGO) = ego.gp.y, ego.gp.x
+history(ego::EGO) = get_samples(ego.krg)

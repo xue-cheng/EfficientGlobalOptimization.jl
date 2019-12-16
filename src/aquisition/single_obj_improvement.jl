@@ -1,7 +1,14 @@
 abstract type ImprovementAquisition{S}<:SingleObjAquisition{S} end
 
-update_parameters!(a::ImprovementAquisition{Min}, gp::GP.GPBase) = a.τ = y_min(gp)
-update_parameters!(a::ImprovementAquisition{Max}, gp::GP.GPBase) = a.τ = y_max(gp)
+function update_parameters!(a::ImprovementAquisition{Min}, krg::Kriging{N,1})where{N} 
+    yo = krg.yscaler \ [minimum(krg.gps[1].y)]
+    a.τ = yo[1]
+end
+
+function update_parameters!(a::ImprovementAquisition{Max}, krg::Kriging{N,1})where{N} 
+    yo = krg.yscaler \ [maximum(krg.gps[1].y)]
+    a.τ = yo[1]
+end
 
 improvement(a::ImprovementAquisition{Min}, y) = a.τ - y
 

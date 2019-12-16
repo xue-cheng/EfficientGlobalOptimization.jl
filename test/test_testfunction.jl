@@ -4,34 +4,34 @@ using MAT
 @testset "single-obj" begin
     function test_optim(test_f, args...)
         f = test_f(args...)
-        y, x = EGO.optimum(f)
+        y, x = EfficientGlobalOptimization.optimum(f)
         abs(f(x)-y) < 1e-6
     end
     function test_inbounds(test_f, args...)
         f = test_f(args...)
-        y, x = EGO.optimum(f)
-        lb = EGO.lowerbounds(f)
-        ub = EGO.upperbounds(f)
+        y, x = EfficientGlobalOptimization.optimum(f)
+        lb = EfficientGlobalOptimization.lowerbounds(f)
+        ub = EfficientGlobalOptimization.upperbounds(f)
         all(lb .<=x .<= ub)
     end
-    @test test_inbounds(EGO.Branin_Forrester)
-    @test test_optim(EGO.Branin_Forrester)
+    @test test_inbounds(EfficientGlobalOptimization.Branin_Forrester)
+    @test test_optim(EfficientGlobalOptimization.Branin_Forrester)
 
     for i = 2:6
-        @test test_optim(EGO.Ackley, i)
-        @test test_optim(EGO.Rosenbrock, i)
-        @test test_optim(EGO.SumSphere, i)
-        @test test_inbounds(EGO.Ackley, i)
-        @test test_inbounds(EGO.Rosenbrock, i)
-        @test test_inbounds(EGO.SumSphere, i)
+        @test test_optim(EfficientGlobalOptimization.Ackley, i)
+        @test test_optim(EfficientGlobalOptimization.Rosenbrock, i)
+        @test test_optim(EfficientGlobalOptimization.SumSphere, i)
+        @test test_inbounds(EfficientGlobalOptimization.Ackley, i)
+        @test test_inbounds(EfficientGlobalOptimization.Rosenbrock, i)
+        @test test_inbounds(EfficientGlobalOptimization.SumSphere, i)
     end
 end
 
 @testset "mult-obj" begin
     x = range(0.0, 1.0; length=11)
-    zdt1 = EGO.ZDT(1,3)
-    zdt2 = EGO.ZDT(2,3)
-    zdt3 = EGO.ZDT(3,3)
+    zdt1 = EfficientGlobalOptimization.ZDT(1,3)
+    zdt2 = EfficientGlobalOptimization.ZDT(2,3)
+    zdt3 = EfficientGlobalOptimization.ZDT(3,3)
     nx = length(x)
     y1 = zeros(nx,nx,nx,2)
     y2 = zeros(nx,nx,nx,2)

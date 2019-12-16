@@ -1,12 +1,13 @@
 module EfficientGlobalOptimization
 
 
-export EGO, optimum, acquire, init_sampling, history, lowerbounds, upperbounds
+using KrigingModel
+
+export KrigingTuner
+export sampling, LHS, GRID
+export EGO, optimum, acquire, history, lowerbounds, upperbounds
 export Acquire, EGOAquisition, ProbabilityOfImprovement, ExpectedImprovement
-export MAPGPOptimizer
-export wrap_function
-export LBFGSOptimizer, CRSOptimizer, ISRESOptimizer
-export ego_save
+#export ego_save
 export ParetoSet
 
 @enum EGOSense Min=1 Max=-1
@@ -19,12 +20,12 @@ function sym2sense(s::Symbol)
     end
 end
 
-include("optimizer/optimizer.jl")
-include("gpmodel/gpmodel.jl")
+include("sampling/sampling.jl")
 include("aquisition/aquisition.jl")
 include("acquire/acquire.jl")
+include("krgtuner.jl")
 include("EGO.jl")
-include("fileio.jl")
+#include("fileio.jl")
 include("testfunction/testfunction.jl")
 include("paretoset.jl")
 end # module
