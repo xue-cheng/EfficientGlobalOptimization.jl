@@ -5,6 +5,7 @@ using KrigingModel
 
 export KrigingTuner
 export sampling, LHS, GRID
+export NoFeasibleInfill
 export EGO, optimum, acquire, history, lowerbounds, upperbounds
 export Acquire, EGOAquisition, ProbabilityOfImprovement, ExpectedImprovement
 #export ego_save
