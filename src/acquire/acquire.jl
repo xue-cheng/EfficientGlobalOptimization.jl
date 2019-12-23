@@ -1,4 +1,8 @@
 
+struct NoFeasibleInfill <: Exception
+    msg::String
+end
+
 mutable struct Acquire
     global_opt::KrigingModel.Optimizer
     local_opt::KrigingModel.Optimizer
@@ -29,5 +33,9 @@ function acquire(krg::Kriging{N,1},
         end
         y
     end
-    doacquire(opt, f, lb, ub)
+    x,fx = doacquire(opt, f, lb, ub)
+    if fx == 0
+        throw(NoFeasibleInfill("Cannot find feasible infill. Kriging model is converged."))
+    end
+    x, fx
 end

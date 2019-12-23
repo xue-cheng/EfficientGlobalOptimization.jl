@@ -36,3 +36,9 @@ function tunekrg!(krg::Kriging, tuner::KrigingTuner)
     end
     tuner.counter = nobs
 end
+
+function forcetune!(krg::Kriging, tuner::KrigingTuner)
+    tune!(krg, tuner.kernbounds, tuner.meanbounds, tuner.g_opt)
+    tune!(krg, tuner.kernbounds, tuner.meanbounds, tuner.l_opt)
+    tuner.counter = length(krg.gps[1].y)
+end

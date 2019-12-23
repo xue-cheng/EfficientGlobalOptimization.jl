@@ -1,8 +1,4 @@
 import Base: append!, ndims, length, isempty, getindex
-struct NoFeasibleInfill <: Exception
-    msg::String
-end
-
 struct EGO{S,KRG <: Kriging,AQ <: SingleObjAquisition,AC <: Acquire,LB,UB}
     krg::KRG
     tuner::KrigingTuner
@@ -35,9 +31,14 @@ lowerbounds(ego::EGO) = ego.lowerbounds
 upperbounds(ego::EGO) = ego.upperbounds
 
 function Base.append!(ego::EGO, x::AbstractMatrix, y::AbstractVector)
-    append!(ego.krg, x, transpose(y))
-    update_parameters!(ego.aquisition, ego.krg)
-    tunekrg!(ego.krg, ego.tuner)
+    try
+        append!(ego.krg, x, transpose(y))
+        update_parameters!(ego.aquisition, ego.krg)
+        tunekrg!(ego.krg, ego.tuner)
+    catch e
+        @info "`append!` failed, error=$e, calling `forcetune!`"
+        forcetune!(ego.krg, ego.tuner) 
+    end
 end
 
 Base.append!(ego::EGO, x::AbstractVector, y::Float64) = append!(ego, reshape(x, :, 1), [y])
@@ -46,22 +47,21 @@ optimum(ego::EGO{Min}) = ego.krg[argmin(ego.krg.gps[1].y)]
 
 optimum(ego::EGO{Max}) = ego.krg[argmax(ego.krg.gps[1].y)]
 
-function acquire(ego::EGO, x_cache::AbstractVector...; retry::Integer = 5, verbose::Bool=false)
-    x, fx = acquire(ego.krg, ego.aquisition, ego.acquire, ego.lowerbounds, ego.upperbounds, x_cache...)
-    if fx==0 
+function acquire(ego::EGO, x_cache::AbstractVector...; retry::Integer = 10, verbose::Bool=false)
+    try
+        return acquire(ego.krg, ego.aquisition, ego.acquire, ego.lowerbounds, ego.upperbounds, x_cache...)
+    catch e
         if retry > 1
-            if verbose
-                @info "Cannot find feasible infill. retry($(retry-1))"
-            end
+            @info "acquire() failed, error=$e, retry($(retry-1))"
             return acquire(ego, x_cache...; retry=retry-1, verbose=verbose)
         else
-            throw(NoFeasibleInfill("Cannot find feasible infill. Kriging model is converged."))
+            if isa(e, NoFeasibleInfill)
+                rethrow(e)
+            else
+                throw(NoFeasibleInfill(sprint(print,e)))
+            end
         end
     end
-    if verbose
-        @info "Infill acquired, x=$x, fx=$fx"
-    end
-    x, fx
 end
 
 history(ego::EGO) = get_samples(ego.krg)
