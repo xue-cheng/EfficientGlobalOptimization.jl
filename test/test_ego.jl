@@ -11,15 +11,18 @@
     mbd = ([-1.0], [1.0])
     tuner = KrigingTuner(kbd, mbd; global_every = 8, local_every = 2)
     ego = EGO(krg, tuner, lb, ub)
-    for i = 1:30
-        x, fx = acquire(ego)
-        @info "$i: $x (EI=$fx)"
-        if fx < eps()
-            @info "EI ≈ 0, stop!"
-            break
+    try
+        for i = 1:30
+            x, fx = acquire(ego;verbose=true)
+            y = f(x)
+            append!(ego, x, y)
         end
-        y = f(x)
-        append!(ego, x, y)
+    catch e
+        if isa(e, NoFeasibleInfill)
+            @info e.msg
+        else
+            rethrow(e)
+        end
     end
     yo, xo = optimum(ego)
     @test yo[1] ≈ yₒ rtol = 0.001
@@ -39,22 +42,25 @@ end
     mbd = ([-1.0], [1.0])
     tuner = KrigingTuner(kbd, mbd; global_every = 8, local_every = 2)
     ego = EGO(krg, tuner, lb, ub)
-    for j = 1:6
-        newx = []
-        for i = 1:5
-            x, fx = acquire(ego, newx...)
-            @info "$j, $i: $x (EI=$fx)"
-            if fx < eps()
-                @info "EI ≈ 0, stop!"
+    try
+        for j = 1:6
+            newx = []
+            for i = 1:5
+                x, fx = acquire(ego, newx...;verbose=true)
+                push!(newx, x)
+            end
+            if isempty(newx)
                 break
             end
-            push!(newx, x)
+            newy = map(f, newx)
+            append!(ego, hcat(newx...), newy)
         end
-        if isempty(newx)
-            break
+    catch e
+        if isa(e, NoFeasibleInfill)
+            @info e.msg
+        else
+            rethrow(e)
         end
-        newy = map(f, newx)
-        append!(ego, hcat(newx...), newy)
     end
     yo, xo = optimum(ego)
     @test yo[1] ≈ yₒ rtol = 0.001
