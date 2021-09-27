@@ -8,34 +8,37 @@ mutable struct Acquire
     local_opt::KrigingModel.Optimizer
 end
 
-function Acquire(; global_optimizer = ISRESOptimizer(maxeval = 10000, ftol_rel = 1e-2),
-                   local_optimizer = LBFGSOptimizer(maxeval = 1000))
-    Acquire(global_optimizer, local_optimizer)
+function Acquire(;
+    global_optimizer=ISRESOptimizer(; maxeval=10000, ftol_rel=1e-2),
+    local_optimizer=LBFGSOptimizer(; maxeval=1000),
+)
+    return Acquire(global_optimizer, local_optimizer)
 end
 
 function doacquire(opt::Acquire, obj, lb::AbstractVector, ub::AbstractVector)
     fx, x, ret = maximize(opt.global_opt, obj, :Auto, lb, ub, (lb + ub) / 2)
-    fx, x, ret = maximize(opt.local_opt,  obj, :Auto, lb, ub, x)
+    fx, x, ret = maximize(opt.local_opt, obj, :Auto, lb, ub, x)
     return x, fx
 end
 
-function acquire(krg::Kriging{N,1}, 
-    a::SingleObjAquisition,
+function acquire(
+    krg::Kriging,
+    a::EGOAquisition,
     opt::Acquire,
     lb::AbstractVector,
     ub::AbstractVector,
-    x_cache::AbstractVector...) where {N}
-    f = x->begin 
-        m, v = predict_full(krg, x)
-        y = a(m[1], v[1])
+    x_cache::AbstractVector...,
+)
+    f = x -> begin
+        y = objective(a, krg, x)
         for xc in x_cache
-            y *= 1.0 - exp(-sum((x - xc).^2))
+            y *= 1.0 - exp(-sum((x - xc) .^ 2))
         end
         y
     end
-    x,fx = doacquire(opt, f, lb, ub)
+    x, fx = doacquire(opt, f, lb, ub)
     if fx == 0
         throw(NoFeasibleInfill("Cannot find feasible infill. Kriging model is converged."))
     end
-    x, fx
+    return x, fx
 end

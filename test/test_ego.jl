@@ -4,7 +4,7 @@
     yₒ, xₒ = optimum(f)
     lb = lowerbounds(f)
     ub = upperbounds(f)
-    x0 = sampling(:LHS, lb, ub, 7)
+    x0 = sampling(lb, ub, 7)
     y0 = transpose(map(f, eachcol(x0)))
     krg = Kriging(x0, y0, MeanConst(0.0), SEArd([0.0,0.0], 3.0))
     kbd = (fill(-5.0, 3), fill(5.0, 3))
@@ -13,7 +13,7 @@
     ego = EGO(krg, tuner, lb, ub)
     try
         for i = 1:30
-            x, fx = acquire(ego;verbose=true)
+            x, fx = acquire(ego)
             y = f(x)
             append!(ego, x, y)
         end
@@ -35,7 +35,7 @@ end
     yₒ, xₒ = optimum(f)
     lb = lowerbounds(f)
     ub = upperbounds(f)
-    x0 = sampling(:LHS, lb, ub, 7)
+    x0 = sampling(lb, ub, 7)
     y0 = transpose(map(f, eachcol(x0)))
     krg = Kriging(x0, y0, MeanConst(0.0), SEArd([0.0,0.0], 3.0))
     kbd = (fill(-5.0, 3), fill(5.0, 3))
@@ -46,7 +46,7 @@ end
         for j = 1:6
             newx = []
             for i = 1:5
-                x, fx = acquire(ego, newx...;verbose=true)
+                x, fx = acquire(ego, newx...)
                 push!(newx, x)
             end
             if isempty(newx)

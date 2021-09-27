@@ -8,6 +8,7 @@ export sampling, LHS, GRID
 export NoFeasibleInfill
 export EGO, optimum, acquire, history, lowerbounds, upperbounds
 export Acquire, EGOAquisition, ProbabilityOfImprovement, ExpectedImprovement
+export constrains, ConstrainedAquisition
 #export ego_save
 export ParetoSet
 
@@ -26,7 +27,6 @@ include("aquisition/aquisition.jl")
 include("acquire/acquire.jl")
 include("krgtuner.jl")
 include("EGO.jl")
-#include("fileio.jl")
 include("testfunction/testfunction.jl")
 include("paretoset.jl")
 end # module

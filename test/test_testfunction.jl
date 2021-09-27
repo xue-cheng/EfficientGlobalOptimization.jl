@@ -54,4 +54,17 @@ end
     @test y2 ≈ y2t
     @test y3 ≈ y3t
 end
+
+@testset "constrained" begin
+    f = EfficientGlobalOptimization.PressureVesselDesign()
+    y, x = EfficientGlobalOptimization.optimum(f)
+    lb = lowerbounds(f)
+    ub = upperbounds(f)
+    @test all(lb .<=x .<= ub)
+    @test isapprox(y, f(x), atol=1e-6)
+    g = constrains(f)
+    @test length(g) == 4
+    z = map(gg->gg(x), g)
+    @test maximum(z) < sqrt(eps())
+end
 end
