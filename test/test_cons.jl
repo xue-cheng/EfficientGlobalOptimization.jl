@@ -36,6 +36,6 @@
     end
     yo, xo = optimum(ego)
     @test yo[1] ≈ f(xo)
-    @test yo[1]/yₒ < 1.005
+    @test yo[1]/yₒ < 1.05
 
 end
