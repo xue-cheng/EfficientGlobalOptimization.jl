@@ -9,7 +9,7 @@ function sampling(lb::AbstractVector{T}, ub::AbstractVector{T}, ns::Int, gs::Fun
     scalar = MinMaxScaler(lb, ub)
     for i in 1:ns
         while true
-            xx = KrigingModel.inverse!(scalar,  next!(s))
+            xx = inverse!(scalar,  next!(s))
             if all(map(g->g(xx)<=0, gs))
                 x[:, i] .= xx
                 break

@@ -1,8 +1,19 @@
 module EfficientGlobalOptimization
 
 
-using KrigingModel
+using Statistics: mean!, mean, std
+using ElasticArrays: ElasticArray
 
+import GaussianProcesses, LinearAlgebra
+
+const GP = GaussianProcesses
+
+
+export StandardScaler, MinMaxScaler
+export GlobalOptimizer, LocalOptimizer, StochasticSearchOptimizer
+export CRSOptimizer, ISRESOptimizer, LBFGSOptimizer, BOBYQAOptimizer
+export minimize, maximize
+export Kriging, tune!, predict_full, getx, gety, get_samples
 export KrigingTuner
 export sampling, LHS, GRID
 export NoFeasibleInfill
@@ -22,6 +33,9 @@ function sym2sense(s::Symbol)
     end
 end
 
+include("scaler/scaler.jl")
+include("optimizer/optimizer.jl")
+include("kriging/kriging.jl")
 include("sampling/sampling.jl")
 include("aquisition/aquisition.jl")
 include("acquire/acquire.jl")

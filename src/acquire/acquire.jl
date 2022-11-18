@@ -4,8 +4,8 @@ struct NoFeasibleInfill <: Exception
 end
 
 mutable struct Acquire
-    global_opt::KrigingModel.Optimizer
-    local_opt::KrigingModel.Optimizer
+    global_opt::Optimizer
+    local_opt::Optimizer
 end
 
 function Acquire(;

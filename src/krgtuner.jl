@@ -3,8 +3,8 @@ mutable struct KrigingTuner
     counter::Int
     g_inter::Int
     l_inter::Int
-    g_opt::KrigingModel.GlobalOptimizer
-    l_opt::KrigingModel.LocalOptimizer
+    g_opt::GlobalOptimizer
+    l_opt::LocalOptimizer
     kernbounds
     meanbounds
 end
@@ -12,9 +12,9 @@ end
 function KrigingTuner(kernbounds,
     meanbounds;
     global_every::Integer = 50,
-    global_opt::KrigingModel.GlobalOptimizer = ISRESOptimizer(maxeval = 10000),
+    global_opt::GlobalOptimizer = ISRESOptimizer(maxeval = 10000),
     local_every::Integer = 5,
-    local_opt::KrigingModel.LocalOptimizer = LBFGSOptimizer(maxeval = 1000))
+    local_opt::LocalOptimizer = LBFGSOptimizer(maxeval = 1000))
     global_every < 0 && throw(ArgumentError("`global_every` must be non-negative"))
     local_every < 0 && throw(ArgumentError("`local_every` must be non-negative"))
     if local_every==global_every==0
