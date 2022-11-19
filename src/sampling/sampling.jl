@@ -1,4 +1,8 @@
-using Sobol
+# File: EfficientGlobalOptimization.jl/src/sampling/sampling.jl
+# Copyright (c) 2019-2022 XUE Cheng
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
 
 function sampling(lb::AbstractVector{T}, ub::AbstractVector{T}, ns::Int, gs::Function...) where T
     @assert length(lb) == length(ub)

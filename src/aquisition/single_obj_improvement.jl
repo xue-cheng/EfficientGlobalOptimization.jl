@@ -1,3 +1,9 @@
+# File: EfficientGlobalOptimization.jl/src/aquisition/single_obj_improvement.jl
+# Copyright (c) 2019-2022 XUE Cheng
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
 abstract type ImprovementAquisition{S} <: SingleObjAquisition{S} end
 
 function update_parameters!(a::ImprovementAquisition{Min}, krg::Kriging{N,1}) where {N}

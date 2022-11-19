@@ -1,3 +1,8 @@
+# File: EfficientGlobalOptimization.jl/src/testfunction/single_obj_functions.jl
+# Copyright (c) 2019-2022 XUE Cheng
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
 
 abstract type SingleObjectiveTestFunction{N} <: TestFunction{N,1} end
 

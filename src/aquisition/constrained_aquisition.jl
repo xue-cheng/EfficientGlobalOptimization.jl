@@ -1,3 +1,9 @@
+# File: EfficientGlobalOptimization.jl/src/aquisition/constrained_aquisition.jl
+# Copyright (c) 2019-2022 XUE Cheng
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
 struct ConstrainedAquisition{A<:EGOAquisition,N} <: EGOAquisition
     base::A
     cons::NTuple{N,Function}

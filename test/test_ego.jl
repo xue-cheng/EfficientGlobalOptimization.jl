@@ -1,3 +1,9 @@
+# File: EfficientGlobalOptimization.jl/test/test_ego.jl
+# Copyright (c) 2019-2022 XUE Cheng
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
 @testset "serial ego" begin
     # EI Min
     f = EfficientGlobalOptimization.Branin_Forrester()

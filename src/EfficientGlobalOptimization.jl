@@ -1,13 +1,22 @@
-module EfficientGlobalOptimization
+# File: EfficientGlobalOptimization.jl/src/EfficientGlobalOptimization.jl
+# Copyright (c) 2019-2022 XUE Cheng
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
 
+module EfficientGlobalOptimization
 
 using Statistics: mean!, mean, std
 using ElasticArrays: ElasticArray
+using Sobol
+using StatsFuns
+using LinearAlgebra
+using NLopt, ForwardDiff, DiffResults
 
-import GaussianProcesses, LinearAlgebra
+import GaussianProcesses
+import Base: append!, ndims, length, isempty, getindex, setproperty!, getproperty
 
 const GP = GaussianProcesses
-
 
 export StandardScaler, MinMaxScaler
 export GlobalOptimizer, LocalOptimizer, StochasticSearchOptimizer
@@ -23,8 +32,8 @@ export constrains, ConstrainedAquisition
 #export ego_save
 export ParetoSet
 
-@enum EGOSense Min=1 Max=-1
-const _sym2sense = Dict(Symbol(i)=>i for i in instances(EGOSense))
+@enum EGOSense Min = 1 Max = -1
+const _sym2sense = Dict(Symbol(i) => i for i in instances(EGOSense))
 function sym2sense(s::Symbol)
     try
         return _sym2sense[s]

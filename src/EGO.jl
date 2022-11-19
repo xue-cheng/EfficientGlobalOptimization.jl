@@ -1,4 +1,9 @@
-import Base: append!, ndims, length, isempty, getindex
+# File: EfficientGlobalOptimization.jl/src/EGO.jl
+# Copyright (c) 2019-2022 XUE Cheng
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
 struct EGO{S,KRG<:Kriging,AQ<:EGOAquisition,AC<:Acquire,LB,UB,NC}
     krg::KRG
     tuner::KrigingTuner

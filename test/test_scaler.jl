@@ -1,3 +1,9 @@
+# File: EfficientGlobalOptimization.jl/test/test_scaler.jl
+# Copyright (c) 2019-2022 XUE Cheng
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
 @testset "Scaler" begin
 
     S = randn(5, 100)

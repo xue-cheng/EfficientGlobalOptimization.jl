@@ -1,4 +1,8 @@
-import Statistics:mean
+# File: EfficientGlobalOptimization.jl/src/testfunction/multi_obj_functions.jl
+# Copyright (c) 2019-2022 XUE Cheng
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
 
 abstract type MultiObjectiveTestFunction{N, M} <: TestFunction{N,M} end
 

@@ -1,3 +1,8 @@
+# File: EfficientGlobalOptimization.jl/src/krgtuner.jl
+# Copyright (c) 2019-2022 XUE Cheng
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
 
 mutable struct KrigingTuner
     counter::Int

@@ -1,3 +1,4 @@
+# File: EfficientGlobalOptimization.jl/src/kriging/predict.jl
 # Copyright (c) 2019-2022 XUE Cheng
 # 
 # This software is released under the MIT License.

@@ -1,3 +1,9 @@
+# File: EfficientGlobalOptimization.jl/test/test_cons.jl
+# Copyright (c) 2019-2022 XUE Cheng
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
 @testset "Constrained" begin 
     # EI Min
     f = EfficientGlobalOptimization.PressureVesselDesign()
@@ -37,5 +43,4 @@
     yo, xo = optimum(ego)
     @test yo[1] ≈ f(xo)
     @test yo[1]/yₒ < 1.05
-
 end

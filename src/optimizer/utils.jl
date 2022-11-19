@@ -1,11 +1,9 @@
+# File: EfficientGlobalOptimization.jl/src/optimizer/utils.jl
 # Copyright (c) 2019-2022 XUE Cheng
 # 
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
 
-import NLopt, ForwardDiff, DiffResults
-
-import Base: setproperty!, getproperty
 function auto_diff(f)
     (x, g) -> if !isempty(g)
         res = DiffResults.DiffResult(0.0, g)

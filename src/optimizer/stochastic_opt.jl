@@ -1,7 +1,9 @@
+# File: EfficientGlobalOptimization.jl/src/optimizer/stochastic_opt.jl
 # Copyright (c) 2019-2022 XUE Cheng
 # 
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
+
 struct StochasticSearchOptimizer{P,S} <: GlobalOptimizer
     algo::Symbol
     population::P

@@ -1,4 +1,8 @@
-using MAT
+# File: EfficientGlobalOptimization.jl/test/test_testfunction.jl
+# Copyright (c) 2019-2022 XUE Cheng
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
 
 @testset "testfunctions" begin
 @testset "single-obj" begin

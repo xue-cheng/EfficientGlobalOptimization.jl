@@ -1,3 +1,9 @@
+# File: EfficientGlobalOptimization.jl/test/test_kriging.jl
+# Copyright (c) 2019-2022 XUE Cheng
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
 @testset "Kriging" begin
     d, n = 3, 10
     x = 2π * rand(d, n)
