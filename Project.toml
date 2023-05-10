@@ -1,7 +1,7 @@
 name = "EfficientGlobalOptimization"
 uuid = "394991d0-d7c6-11e9-19af-cd33f6408fef"
 authors = ["Cheng Xue <xuecheng@nuaa.edu.cn>"]
-version = "0.2.0"
+version = "1.0.0"
 
 [deps]
 DiffResults = "163ba53b-c6d8-5494-b064-1a9d43ac40c5"
@@ -18,8 +18,8 @@ StatsFuns = "4c63d2b9-4356-54db-8cca-17b64c39e42c"
 [compat]
 Sobol = "1"
 StatsFuns = "0.7, 0.8, 0.9"
-DiffResults = "1.0"
-ElasticArrays = "1.0"
+DiffResults = "1.0, 1.1"
+ElasticArrays = "1.0, 1.1, 1.2"
 ForwardDiff = "0.10"
 GaussianProcesses = "0.12"
 NLopt = "0.6"
